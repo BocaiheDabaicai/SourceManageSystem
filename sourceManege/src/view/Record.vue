@@ -4,46 +4,113 @@
       <text>资产信息录入</text>
     </div>
     <div class="detaill">
-      <input placeholder="编码自动生成" readonly/>
+      <input placeholder="编码自动生成" v-model="onlyId" readonly/>
       <select class="category" v-model="category">
         <option value="">--类别选择--</option>
-        <option value="计算机">计算机</option>
-        <option value="网络设备">网络设备</option>
-        <option value="操作系统">操作系统</option>
+        <option value="compute">计算机</option>
+        <option value="network">网络设备</option>
+        <option value="system">操作系统</option>
       </select>
-      <select class="category">
+      <select class="category" v-model="type">
         <option value="">--类型选择--</option>
-        <option value="计算机">计算机</option>
-        <option value="网络设备">网络设备</option>
-        <option value="操作系统">操作系统</option>
+        <option v-for="item in options_choose" :key="item.key" :value="item.value">{{ item.value }}</option>
       </select>
-      <select class="category">
+      <select class="category" v-model="apartment">
         <option value="">--归属部门--</option>
-        <option value="计算机">计算机</option>
-        <option value="网络设备">网络设备</option>
-        <option value="操作系统">操作系统</option>
+        <option v-for="(item,index) in apartments" :key="index" :value="item">{{ item }}</option>
       </select>
-      <input placeholder="配置 型号 版本" />
-      <input placeholder="备注" />
+      <input :placeholder="textareaTips" :readonly="configRef" v-model="config"/>
+      <input placeholder="备注" v-model="extraText"/>
       <div class="buttonGroup">
-        <button>提交</button>
+        <button @click="submit">提交</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {reactive, ref, watch} from "vue"
+import {computed, reactive, ref, watch} from "vue"
 
+const onlyId = ref()
 const category = ref('');
-const options = reactive({
-  cumpute:{
+const type = ref('')
+const apartment = ref('')
+const extraText = ref()
 
+const options = reactive({
+  compute:[
+    {key:0,value:"台式机"},
+    {key:1,value:"笔记本"},
+    {key:2,value:"服务器"},
+  ],
+  network:[
+    {key:0,value:"交换机"},
+    {key:1,value:"防火墙"},
+    {key:2,value:"路由器"},
+  ],
+  system:[
+    {key:0,value:"windows"},
+    {key:1,value:"linux"},
+  ]
+})
+const configRef = ref(true);
+const config = ref("");
+const apartments = ref(["市场部","计划物控部"])
+const options_choose = computed(()=>{
+  if(category.value!==''){
+    configRef.value = false
+    if (category.value === 'compute'){
+      return options.compute
+    }
+    if (category.value === 'network'){
+      return options.network
+    }
+    if (category.value === 'system'){
+      return options.system
+    }
   }
+  configRef.value = true
+  config.value = ""
+  return []
+})
+const textareaTips = computed(()=>{
+  if(category.value!==''){
+    if (category.value === 'compute'){
+      return "CPU 内存 硬盘 操作系统 显示器"
+    }
+    if (category.value === 'network'){
+      return "型号"
+    }
+    if (category.value === 'system'){
+      return "版本"
+    }
+  }
+  return "请先选择类别"
 })
 watch(category,(newValue,oldValue)=>{
   console.log("newValue",newValue)
 })
+
+function guid2() {
+  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1) + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+}
+
+function submit(){
+  if (category.value===''){
+    alert("请正确填写资产信息")
+  }else{
+    onlyId.value = guid2()
+    let list = []
+    list.push(onlyId.value)
+    list.push(category.value)
+    list.push(type.value)
+    list.push(apartment.value)
+    list.push(config.value)
+    list.push(extraText.value)
+    console.log(list)
+  }
+}
+
 </script>
 
 <style scoped>
