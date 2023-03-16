@@ -26,6 +26,12 @@
       </div>
     </div>
   </div>
+  <van-dialog v-model:show="dialogRef" :show-confirm-button="dialogSuccess==='提交成功'" @confirm="onConfirm">
+    <div style="text-align: center;margin-top: 5%;font-size: 20px;font-family: '有爱魔兽圆体 CN';color: #1989fa;">
+      <van-loading v-show="dialogSuccess!=='提交成功'" color="#1989fa" />
+      <p>🥛{{ dialogSuccess }}</p>
+    </div>
+  </van-dialog>
 </template>
 
 <script setup>
@@ -36,6 +42,9 @@ const category = ref('');
 const type = ref('')
 const apartment = ref('')
 const extraText = ref()
+
+const dialogRef = ref(false)
+const dialogSuccess = ref("提交中...")
 
 const options = reactive({
   compute:[
@@ -99,6 +108,11 @@ function submit(){
   if (category.value===''){
     alert("请正确填写资产信息")
   }else{
+    dialogRef.value = !dialogRef.value
+    setTimeout(()=>{
+      dialogSuccess.value = "提交成功"
+    },2000)
+
     onlyId.value = guid2()
     let list = []
     list.push(onlyId.value)
@@ -109,6 +123,15 @@ function submit(){
     list.push(extraText.value)
     console.log(list)
   }
+}
+function onConfirm() {
+  onlyId.value = ''
+  category.value = ''
+  type.value = ''
+  apartment.value = ''
+  config.value = ''
+  extraText.value = ''
+  dialogSuccess.value = "提交中..."
 }
 
 </script>
