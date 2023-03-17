@@ -3,6 +3,6 @@ html,body,#app{
     margin:0;
     padding: 0;
     /*background: antiquewhite;*/
-    background-image: url("../assets/592190.jpg");
+    background-image: url("../assets/background.jpg");
     background-size: cover;
 }
