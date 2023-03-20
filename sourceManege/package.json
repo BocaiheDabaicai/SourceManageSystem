@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "pinia": "^2.0.33",
+    "qrcode.vue": "^3.3.4",
     "vant": "^4.1.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"

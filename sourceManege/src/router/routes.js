@@ -13,5 +13,10 @@ export default [
         name:'select',
         path:'/select',
         component:()=>import('../view/Select.vue'),
+    },
+    {
+        name:'test',
+        path:'/test',
+        component:()=>import('../view/Test.vue')
     }
 ]
