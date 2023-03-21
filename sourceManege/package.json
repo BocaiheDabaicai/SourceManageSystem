@@ -13,6 +13,7 @@
     "qrcode.vue": "^3.3.4",
     "vant": "^4.1.0",
     "vue": "^3.2.45",
+    "vue-plugin-hiprint": "^0.0.48",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
